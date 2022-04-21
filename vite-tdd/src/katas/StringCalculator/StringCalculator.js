@@ -13,11 +13,11 @@ class StringCalculator {
         }
 
         const numbersArray = numbers.replace('\n', delimiter).split(delimiter).map(num => parseInt(num));
-        this.checkNegativeValues(numbersArray);
+        
 
-        if(numbersArray.length === 1) return numbersArray[0];
+        if(numbersArray.length === 1 && numbersArray[0] >= 0) return numbersArray[0];
 
-        return numbersArray.reduce((a, b) => a+b);
+        return this.sum(this.checkNegativeValues(numbersArray));
     }
 
     checkNegativeValues(numbersArray) {
@@ -28,6 +28,12 @@ class StringCalculator {
         }
 
         if(negatives.length > 0) throw new Error("There should be no negative values: " + negatives.join(','));
+
+        return numbersArray;
+    }
+
+    sum(numbersArray) {
+        return numbersArray.reduce((a, b) => a+b);
     }
 }
 
