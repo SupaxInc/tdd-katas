@@ -1,39 +1,40 @@
 class StringCalculator {
+    constructor() {
+    }
 
     add(numbers) {
         if(numbers === "") return 0;
 
-        let delimiter; 
+        let delimiter;
         if(numbers.includes("//")) {
-            delimiter = numbers[2];
-            numbers = numbers.substring(4);
+            delimiter = numbers.charAt(2);
+            numbers = numbers.slice(4);
         }
-        else {
-            delimiter = ',';
+        else if(numbers.includes(",")) {
+            delimiter = ",";
         }
-
-        const numbersArray = numbers.replace('\n', delimiter).split(delimiter).map(num => parseInt(num));
+        else if(numbers.includes("\n")){
+            delimiter = "\n";
+        }
         
+        const arrNumbers = numbers.split(delimiter).map(num => parseInt(num));
 
-        if(numbersArray.length === 1 && numbersArray[0] >= 0) return numbersArray[0];
-
-        return this.sum(this.checkNegativeValues(numbersArray));
+        return this.sum(this.checkNegatives(arrNumbers));
     }
 
-    checkNegativeValues(numbersArray) {
-        const negatives = [];
-
-        for(let num of numbersArray) {
-            if(num < 0) negatives.push(num);
+    checkNegatives(nums) {
+        const negativeNums = [];
+        for(const num of nums) {
+            if(num < 0) negativeNums.push(num);
         }
 
-        if(negatives.length > 0) throw new Error("There should be no negative values: " + negatives.join(','));
+        if(negativeNums.length) throw new Error(`negatives not allowed: ${negativeNums.join(",")}`);
 
-        return numbersArray;
-    }
+        return nums;
+    } 
 
-    sum(numbersArray) {
-        return numbersArray.reduce((a, b) => a+b);
+    sum(nums) {
+        return nums.filter(num => num < 1001).reduce((a, b) => a+b);
     }
 }
 
